@@ -29,8 +29,13 @@ class MainFragment : Fragment() {
     ): View {
         binding = MainFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
+        observeViewModel()
 
         return view
+    }
+
+    private fun observeViewModel() {
+        viewModel.testEndpoint()
     }
 
 }
