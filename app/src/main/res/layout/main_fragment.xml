@@ -19,4 +19,14 @@
         android:visibility="gone"
         />
 
+    <include
+        android:id="@+id/lessonView"
+        layout="@layout/lesson_view"
+        />
+
+    <include
+        android:id="@+id/errorView"
+        layout="@layout/error_view"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
