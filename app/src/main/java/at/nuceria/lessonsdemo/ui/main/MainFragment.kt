@@ -95,6 +95,7 @@ class MainFragment : Fragment() {
     private fun showLesson(data: Lesson) {
         binding.lessonView.run {
             root.visibility = View.VISIBLE
+            clearLessonView()
             val inputTextBlockIndex = data.getInputTextBlockIndex()
             toggleButtonState(inputTextBlockIndex == -1)
             val referencedIds = IntArray(data.content.size)
@@ -108,6 +109,17 @@ class MainFragment : Fragment() {
                 referencedIds[i] = textView.id
             }
             textFlowView.referencedIds = referencedIds
+            button.setOnClickListener {
+                viewModel.trackLessonFinished(data.id)
+            }
+        }
+    }
+
+    private fun clearLessonView() {
+        val ids = binding.lessonView.textFlowView.referencedIds
+        ids.forEach {
+            val view = binding.root.findViewById<View>(it)
+            binding.lessonView.root.removeView(view)
         }
     }
 
