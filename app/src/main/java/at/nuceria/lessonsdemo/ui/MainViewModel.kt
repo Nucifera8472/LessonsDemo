@@ -19,7 +19,7 @@ class MainViewModel @Inject constructor(private val lessonsRepository: LessonsRe
     ViewModel() {
 
     // this will be fetched from the db later
-    private var lastFinishedLesson = -1
+    private var lastFinishedLesson = 6
 
     // prevent state updates from other classes
     private val _currentLesson = MutableStateFlow<Resource<Lesson?>>(Resource.Loading(null))

@@ -3,4 +3,5 @@
     <string name="no_lessons_available">No lessons available</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="fetching_lessons_failed">Fetching lessons failed</string>
+    <string name="next">Next</string>
 </resources>
