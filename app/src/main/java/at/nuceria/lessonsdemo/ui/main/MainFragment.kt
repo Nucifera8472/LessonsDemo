@@ -20,11 +20,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import at.nuceria.lessonsdemo.R
 import at.nuceria.lessonsdemo.data.Resource
+import at.nuceria.lessonsdemo.data.managers.NoLessonsAvailableError
 import at.nuceria.lessonsdemo.data.remote.response.Lesson
 import at.nuceria.lessonsdemo.data.remote.response.TextBlock
 import at.nuceria.lessonsdemo.databinding.MainFragmentBinding
 import at.nuceria.lessonsdemo.ui.MainViewModel
-import at.nuceria.lessonsdemo.ui.NoLessonsAvailableError
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -57,7 +57,7 @@ class MainFragment : Fragment() {
             // lifecycle is in the STARTED state (or above) and cancels it when it's STOPPED.
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 // Trigger the flow and start listening for values.
-                viewModel.getLesson()
+                viewModel.getNextUnfinishedLesson()
                 viewModel.currentLesson.collect { onNewDataReceived(it) }
             }
         }

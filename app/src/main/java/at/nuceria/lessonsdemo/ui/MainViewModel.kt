@@ -18,8 +18,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(private val lessonsRepository: LessonsRepository) :
     ViewModel() {
 
-    // this will be fetched from the db later
-    private var lastFinishedLesson = -1L
+    private var lessonStartedTimeStamp: Long? = null
 
     // prevent state updates from other classes
     private val _currentLesson = MutableStateFlow<Resource<Lesson?>>(Resource.Loading(null))
@@ -33,24 +32,22 @@ class MainViewModel @Inject constructor(private val lessonsRepository: LessonsRe
         Timber.e(exception)
     }
 
-    fun getLesson() = viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-        val lessons = lessonsRepository.getLessons()
-        if (lessons.isEmpty()) {
-            _currentLesson.value = Resource.Error(NoLessonsAvailableError())
-            return@launch
+    fun getNextUnfinishedLesson() =
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+            _currentLesson.value = Resource.Loading(null)
+            val lesson = lessonsRepository.getNextUnfinishedLesson()
+            _currentLesson.value = if (lesson != null) {
+                lessonStartedTimeStamp = System.currentTimeMillis()
+                Resource.Success(lesson)
+            } else {
+                Resource.AllDone()
+            }
         }
-        val nextUnfinishedLesson = lessons.firstOrNull { it.id > lastFinishedLesson }
-        _currentLesson.value = if (nextUnfinishedLesson != null) {
-            Resource.Success(nextUnfinishedLesson)
-        } else {
-            Resource.AllDone()
-        }
-    }
 
-    fun trackLessonFinished(id: Long) {
-        lastFinishedLesson = id
-        getLesson()
-    }
+    fun trackLessonFinished(id: Long) =
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+            val now = System.currentTimeMillis()
+            lessonsRepository.trackFinishedLesson(id, lessonStartedTimeStamp ?: now, now)
+            getNextUnfinishedLesson()
+        }
 }
-
-class NoLessonsAvailableError : Throwable()
