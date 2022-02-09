@@ -4,4 +4,5 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="fetching_lessons_failed">Fetching lessons failed</string>
     <string name="next">Next</string>
+    <string name="all_done">All done!</string>
 </resources>

@@ -29,4 +29,9 @@
         layout="@layout/error_view"
         />
 
+    <include
+        android:id="@+id/all_done_view"
+        layout="@layout/all_done_view"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -75,12 +75,11 @@ class MainFragment : Fragment() {
 
         if (resource is Resource.Loading) {
             if (resource.data != null) {
-                binding.progressbar.visibility = View.VISIBLE
+                binding.progressbar.visibility = View.GONE
             } else {
                 binding.progressbar.visibility = View.VISIBLE
             }
         } else {
-            binding.progressbar.visibility = View.GONE
             binding.progressbar.visibility = View.GONE
         }
 
@@ -90,6 +89,10 @@ class MainFragment : Fragment() {
         } else {
             binding.errorView.root.visibility = View.GONE
         }
+
+        binding.allDoneView.root.visibility =
+            if (resource is Resource.AllDone) View.VISIBLE else View.GONE
+
     }
 
     private fun showLesson(data: Lesson) {
